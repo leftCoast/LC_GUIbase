@@ -42,6 +42,7 @@ point	displayObj::lP(point gP) {
 	aPt.y = gP.y -  offsetY;
 	return aPt;
 }
+	
 
 int  displayObj::width(void) {  }
 int  displayObj::height(void) {  }

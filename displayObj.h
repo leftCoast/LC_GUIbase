@@ -7,6 +7,7 @@
 #include <baseGraphics.h>
 #include <bitmap.h>
 
+
 // This is going to by our base display object. Similar to adafruit's GFX object.
 // The plan is to inherit this for whatever glue code each piece of 
 // hardware needs to run.
@@ -23,7 +24,7 @@ class displayObj {
 				int	gX(int x);
 				int	gY(int y);
 				point	lP(point gP);
-					
+				
 	virtual	int	width(void);
 	virtual	int	height(void);
 	virtual	bool	dispObjBegin(void);
@@ -72,13 +73,13 @@ class displayObj {
   				bool canRead(void);
   
   protected:
-  				int		offsetX;
-  				int		offsetY;
-				bool		graphic;
-				bool		color;
-				bool		hasTouch;
-				bool		hasSD;
-				bool		readable;
+  				int			offsetX;
+  				int			offsetY;
+				bool			graphic;
+				bool			color;
+				bool			hasTouch;
+				bool			hasSD;
+				bool			readable;
 };
 
 #endif
