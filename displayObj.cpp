@@ -44,8 +44,8 @@ point	displayObj::lP(point gP) {
 }
 	
 
-int  displayObj::width(void) {  }
-int  displayObj::height(void) {  }
+int  displayObj::width(void) { return 0; }	// Better fill these two out..
+int  displayObj::height(void) { return 0; }	//
 void displayObj::startWrite(void) {  }
 void displayObj::endWrite(void) {  }
 bool displayObj::dispObjBegin(void) { return false; }

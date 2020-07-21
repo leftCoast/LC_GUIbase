@@ -8,7 +8,7 @@
 #include <bitmap.h>
 
 
-// This is going to by our base display object. Similar to adafruit's GFX object.
+// This is our base display object. Similar to adafruit's GFX object.
 // The plan is to inherit this for whatever glue code each piece of 
 // hardware needs to run.
 
