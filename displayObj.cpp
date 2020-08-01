@@ -80,6 +80,9 @@ void displayObj::drawPixel(int locX,int locY,colorObj* pColor) { }
 void displayObj::drawPixelInvert(int x,int y) { }
 void displayObj::frameRectInvert(int x,int y,int width,int height) { }
 
+
+// For now alpha is treated like a binary. Because I'm in a hurry and we can't read what
+// the display is showing anyway. Although bitmaps should be able to use the full 255 bits.
 void displayObj::blit(int locX,int locY,bitmap* inBitmap) {
 
 	int		width;
@@ -91,8 +94,10 @@ void displayObj::blit(int locX,int locY,bitmap* inBitmap) {
 		height = inBitmap->getHeight();
 		for(int y=0;y<height;y++) {
 			for(int x=0;x<width;x++) {
-				aColor = inBitmap->getColor(x,y);
-				drawPixel(x+locX,y+locY,&aColor);
+				if (inBitmap->getAlpha(x,y)) {
+					aColor = inBitmap->getColor(x,y);
+					drawPixel(x+locX,y+locY,&aColor);
+				}
 			}
 		}
 	}
