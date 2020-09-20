@@ -120,7 +120,31 @@ void rect::setRect(int inX, int inY, int inWidth,int inHeight) {
    setSize(inWidth,inHeight);
 }
 
+// Become the enclosing rect of yourself and this rect.
+void  rect::addRect(rect* inRect) {
 
+	rect	result(this);
+	
+	if (inRect)	{													// If we got a rect..
+		result.x			= min(x,inRect->x);					// X would be the minimum of ours && inRect's x values.
+		result.y			= min(y,inRect->y);					// Y would be the minimum of ours && inRect's y values.
+		if (maxX()>inRect->maxX()) {							// If our max x is larger that inRect's max x..
+			result.width = maxX() - result.x;				// Then width would be Our max x minus result's x value.
+		} else {														// Else, if our max x is NOT larger than BinRect's max x..
+			result.width = inRect->maxX() - result.x;		// Then width would be inRect's max x minus the resulting x value.
+		}
+		if (maxY()>inRect->maxY()) {							// If our max y is larger that inRect's max y..
+			result.height = maxY() - result.y;				// Then height would be our max y minus result's y value.
+		} else {														// Else, if our max Y is NOT larger than inRect's max Y..
+			result.height = inRect->maxY() - result.y;	// Then width would be inRect's max y minus the resulting y value.
+		}
+	}
+	setRect(&result);
+}
+	
+	
+	
+	
 void rect::insetRect(int inset) {
 
 	x = x + inset;

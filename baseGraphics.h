@@ -45,6 +45,7 @@ class rect {
   			  	void  setRect(point* inPt1,point* inPt2);							// Or two points..
   			  	void	setRect(int inX, int inY, int inWidth,int inHeight);	// Or the usual way..
           	void	insetRect(int inset);											// Inset all sides by this much. Or expand if negative.
+          	void	addRect(rect* inRect);											// Become the rect that spans ourself and this incoming rect.
           	int  	maxX(void);                            					// Where's our last pixel?
           	int  	maxY(void);                            					// Same as obove but in the Y direction.
           	int  	minX(void);                            					// Where's our first pixel?
