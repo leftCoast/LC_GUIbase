@@ -211,3 +211,28 @@ bool rect::overlap(rect* checkRect) {
 	}
 
 
+// Are we contained in this passed in rectangle?
+bool rect::isSubRectOf(rect* checkRect) {
+	
+	point tr;
+	point tl;
+	point br;
+	point bl;
+	
+	tr = getCorner(topRightPt);
+	tl = getCorner(topLeftPt);
+	br = getCorner(bottomRightPt);
+	bl = getCorner(bottomLeftPt);
+	
+	return checkRect->inRect(&tr)
+			&& checkRect->inRect(&tl)
+			&& checkRect->inRect(&br)
+			&& checkRect->inRect(&bl);
+}
+
+
+
+
+
+
+
