@@ -63,8 +63,6 @@ void displayObj::fillRect(int locX,int locY,int width,int height,colorObj* inCol
 void displayObj::fillRect(rect* inRect,colorObj* inColor) { }
 void displayObj::drawRect(int locX,int locY,int width,int  height,colorObj* inColor) { }
 void displayObj::drawRect(rect* inRect,colorObj* inColor) { }
-void displayObj::fillRectGradient(int inX,int inY,int inXSize,int inYSize,colorObj* startColor,colorObj* endColor,bool vertical) { }
-void displayObj::fillScreenGradient(colorObj* startColor,colorObj* endColor,bool vertical) { }
 void displayObj::fillRoundRect(int locX,int locY,int width,int height,int radius,colorObj* inColor){ }
 void displayObj::drawRoundRect(int locX,int locY,int width,int height,int radius,colorObj* inColor){ }
 void displayObj::fillRoundRect(rect* inRect,int radius,colorObj* inColor){ fillRoundRect(inRect->x,inRect->y,inRect->width,inRect->height,radius,inColor); }
@@ -80,6 +78,44 @@ void displayObj::drawPixel(int locX,int locY,colorObj* pColor) { }
 void displayObj::drawPixelInvert(int x,int y) { }
 void displayObj::frameRectInvert(int x,int y,int width,int height) { }
 
+
+void displayObj::fillRectGradient(int inX,int inY,int width,int height,colorObj* startColor,colorObj* endColor,bool rising,bool vertical) {
+
+	colorMapper theColorMap(startColor,endColor);
+	mapper		thePercentMap;
+	colorObj		theColor;
+	float			percent;
+
+	if (vertical) {
+		if (rising) {
+			thePercentMap.setValues(inY,inY+height-1,0,100);
+		} else {
+			thePercentMap.setValues(inY,inY+height-1,100,0);
+		}
+		for(int y=inY;y<inY+height;y++) {
+			percent = thePercentMap.map(y);			
+			theColor = theColorMap.map(percent);
+			drawHLine(inX,y,width,&theColor);
+		}
+	} else {
+		if (rising) {
+			thePercentMap.setValues(inX,inX+width-1,0,100);
+		} else {
+			thePercentMap.setValues(inX,inX+width-1,100,0);
+		}
+		for(int x=inX;x<inX+width;x++) {
+			percent = thePercentMap.map(x);			
+			theColor = theColorMap.map(percent);
+			drawVLine(x,inY,width,&theColor);
+		}
+	}
+}
+
+
+void displayObj::fillScreenGradient(colorObj* startColor,colorObj* endColor,bool rising,bool vertical) {
+
+	fillRectGradient(0,0,width(),height(),startColor,endColor,rising,vertical);
+}
 
 // For now alpha is treated like a binary. Because I'm in a hurry and we can't read what
 // the display is showing anyway. Although bitmaps should be able to use the full 255 bits.

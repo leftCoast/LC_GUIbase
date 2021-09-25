@@ -44,8 +44,6 @@ class displayObj {
 	virtual	void	fillRect(rect* inRect,colorObj* inColor);
 	virtual	void	drawRect(rect* inRect,colorObj* inColor);
 	virtual	void	drawRect(int locX,int locY,int width,int height, colorObj* inColor);
-	virtual	void	fillRectGradient(int inX,int inY,int inXSize,int inYSize,colorObj* startColor,colorObj* endColor,bool vertical=true);
-	virtual	void	fillScreenGradient(colorObj* startColor,colorObj* endColor,bool vertical=true);
 	virtual	void	fillRoundRect(int locX,int locY,int width,int height,int radius,colorObj* inColor);
 	virtual	void	drawRoundRect(int locX,int locY,int width,int height,int radius,colorObj* inColor);
 	virtual	void	fillRoundRect(rect* inRect,int radius,colorObj* inColor);
@@ -62,7 +60,9 @@ class displayObj {
    
 	virtual	void	drawPixelInvert(int x,int y);
 	virtual	void	frameRectInvert(int x,int y,int width,int height);
-
+	virtual	void	fillRectGradient(int inX,int inY,int width,int height,colorObj* startColor,colorObj* endColor,bool rising=true,bool vertical=true);
+	virtual	void	fillScreenGradient(colorObj* startColor,colorObj* endColor,bool rising=true,bool vertical=true);
+	
 	virtual	point	getPoint(void);
 	virtual	bool	touched(void);
   
