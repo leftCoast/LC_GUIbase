@@ -3,7 +3,7 @@
 
 #include <baseGraphics.h>
 
-
+/*
 class clipRect {
 
 	public:
@@ -14,5 +14,6 @@ class clipRect {
 	
 				rect*	mClipRect;
 };
-	
+*/
+
 #endif

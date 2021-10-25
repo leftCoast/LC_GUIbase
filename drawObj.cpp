@@ -589,3 +589,7 @@ drawObj* drawList::findItem(point* where) {
 	return NULL;
 }
 
+	
+
+
+

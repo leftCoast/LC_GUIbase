@@ -131,7 +131,6 @@ class drawList : public drawGroup {
   				bool	mVertical;
   	
 };
-
-
+	
 #endif
 
