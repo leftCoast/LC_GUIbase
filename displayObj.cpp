@@ -28,10 +28,13 @@ void displayObj::popOffset(int x, int y) {
 }
 
   
-int displayObj::gX(int x) { return x + offsetX; }
+int displayObj::gX(int lX) { return lX + offsetX; }
 
+int displayObj::gY(int lY) { return lY + offsetY; }
+	
+int displayObj::lX(int gX) { return gX - offsetX; }
 
-int displayObj::gY(int y) { return y + offsetY; }
+int displayObj::lY(int gY) { return gY - offsetY; }
 	
 	
 point	displayObj::lP(point gP) {

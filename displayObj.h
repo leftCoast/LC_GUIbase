@@ -21,8 +21,10 @@ class displayObj {
 
 				void	pushOffset(int x, int y);
 				void	popOffset(int x, int y);
-				int	gX(int x);
-				int	gY(int y);
+				int	gX(int lX);
+				int	gY(int lY);
+				int	lX(int gX);
+				int	lY(int gY);
 				point	lP(point gP);
 				
 	virtual	int	width(void);
