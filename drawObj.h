@@ -60,6 +60,23 @@ protected:
 // idle time.
 // ***************************************************************
 
+/*
+// Sometimes you need to know when all the drawing nonsense has been completed. If this is
+// the case you can use this to get a callback when that happens.
+class drawMonitor :	public idler {
+
+	public:
+				drawMonitor(void);	
+	virtual	~drawMonitor(void);
+	
+	virtual	void setCallback(void(*funct)(void));
+	virtual	void idle(void);
+	
+				timeObj	waitTimer;
+				void		(*callback)(void);
+				int		count;
+};
+*/
 
 class viewMgr : public idler {
     
@@ -79,12 +96,11 @@ public:
             drawObj	listHeader;				// Header of the drawObj list;
 };
 
-extern	viewMgr 	viewList;								// Our global GUI manager.
-extern 	drawObj*	theTouched;								// Who's accepted a finger touch on the screen?
-extern	drawObj*	currentFocus;							// Focus goes hand in hand with view management.
-extern 	void		setFocusPtr(drawObj* newFocus);	// Anyone can set focus by calling this function.
-
-
+extern	viewMgr		viewList;								// Our global GUI manager.
+extern 	drawObj*		theTouched;								// Who's accepted a finger touch on the screen?
+extern	drawObj*		currentFocus;							// Focus goes hand in hand with view management.
+extern 	void			setFocusPtr(drawObj* newFocus);	// Anyone can set focus by calling this function.
+extern 	bool			drawing;
 
 // ***************************************************************
 // The idea here is to have a draw object that manages a group of

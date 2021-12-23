@@ -122,11 +122,6 @@ eventMgr::~eventMgr(void) { }
 void eventMgr::begin(void) { hookup(); }
 
 
-/*
-// New events go in here.
-void eventMgr::addEvent(event* newEvent) { push((linkListObj*)newEvent); }
-*/
-
 // Sometimes you want a fresh start.
 void eventMgr::flushEvents(void) { dumpList(); }
 
@@ -148,6 +143,12 @@ event eventMgr::getEvent(void) {
 		return anEvent;						// Return our local copy.
 	}
 	return mNullEvent;						// No event waiting? Send them a nullEvent.
+}
+
+
+bool eventMgr::active(void) {
+
+	return  !isEmpty() || mTouched;
 }
 
 

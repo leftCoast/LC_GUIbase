@@ -226,22 +226,64 @@ void drawObj::setCallback(void (*funct)(void)) { callback = funct; }
 // ***************************************************
 
 
-viewMgr 	viewList;
-drawObj*	currentFocus = NULL;	// Totally global because? There's only ONE user.
-drawObj*	theTouched = NULL;	// Who's accepted a finger touch on the screen?
+viewMgr 		viewList;
+drawObj*		currentFocus	= NULL;	// Totally global because? There's only ONE user.
+drawObj*		theTouched		= NULL;	// Who's accepted a finger touch on the screen?
+bool			drawing			= false;
+
+/*
+drawMonitor	drawNotify;				// When drawing is complete, you can get notified.
+
+drawMonitor::drawMonitor(void)
+	: idler() { 
+	
+	waitTimer.setTime(5);
+	callback = NULL;
+	count = 0;
+}
+	
+		
+drawMonitor::~drawMonitor(void) {  }
+
+	
+void drawMonitor::setCallback(void(*funct)(void)) {
+	Serial.println("drawMonitor::setCallback()");
+	callback = funct;		// Save off the function potiner. Or NULL..
+	count = 0;				// Zero out the count.
+	hookup();				// Just in case we haven't been.. Hookup.
+}
+
+
+void drawMonitor::idle(void) {
+	
+	if (callback) {						// If we have a non-null callback..
+		if (waitTimer.ding()) {			// If our timer has expired..
+			if (viewList.drawing()) {	// If we are still doing the drawing thing..
+				count = 0;					// Re-zero out the counter.
+			} else if (count<4) {		// Else, NOT doing drawing thing and the count is less than X..
+				count++;						// Bump up the count.
+			} else {							// Else, NOT doing drawing  and the count is >= X..
+				callback();					// Call the callback.
+				setCallback(NULL);		// Loose the one shot callback pointer.
+			}
+			waitTimer.start();			// In all cases, restart the timer.
+		}
+	}
+}
+*/			
 
 void	setFocusPtr(drawObj* newFocus) {
 
-		if (newFocus!=currentFocus) {					// People are lazy. Now they don't need to check.
-			if (currentFocus) {							// Check for NULL..
-				currentFocus->setThisFocus(false);	// Warn them that their star is falling.
-			}
-			currentFocus = newFocus;					// The up and coming..
-			if (currentFocus) {							// If we're actually passed in something.
-				currentFocus->setThisFocus(true);	// Tell 'em their star is rising!!
-			}
+	if (newFocus!=currentFocus) {					// People are lazy. Now they don't need to check.
+		if (currentFocus) {							// Check for NULL..
+			currentFocus->setThisFocus(false);	// Warn them that their star is falling.
+		}
+		currentFocus = newFocus;					// The up and coming..
+		if (currentFocus) {							// If we're actually passed in something.
+			currentFocus->setThisFocus(true);	// Tell 'em their star is rising!!
 		}
 	}
+}
 	
 	
 viewMgr::viewMgr(void) { }
@@ -293,22 +335,42 @@ bool viewMgr::checkEvents(event* theEvent) {
 }
 
 
-
-// Checking for redraws.
+// Checking for redraws. And doing them.
 void viewMgr::checkRefresh(void) {
     
 	drawObj*	trace;
 	
-	trace = (drawObj*)listHeader.getLast();		// make sure we're at the bottom.
-	while(trace && trace!=(&listHeader)) {			// While not NULL or pointing at our header.
-		if (trace->wantRefresh()) {					// Does this guy want refresh?
+	trace = (drawObj*)listHeader.getLast();	// make sure we're at the bottom.
+	while(trace && trace!=(&listHeader)) {		// While not NULL or pointing at our header.
+		if (trace->wantRefresh()) {				// Does this guy want refresh?
+      	drawing = true;							// We gotta' draw something. So its true.
       	trace->draw();								// Call his Draw method.
 		}
-      trace = (drawObj*)trace->dllPrev;			// Bump up the list.
+      trace = (drawObj*)trace->dllPrev;		// Bump up the list.
 	}
 }
- 
- 
+
+
+// There are times when you need to make sure all the redrawing has stopped before doing
+// something else. Like bringing the screen up, or adding a new modal to the list. Here's
+// where you can find that kind of thing out.
+// bool viewMgr::drawing(void) {
+// 
+// 	drawObj*	trace;
+// 	Serial.println("drawing() ??");
+// 	trace = (drawObj*)listHeader.getLast();		// make sure we're at the bottom.
+// 	while(trace && trace!=(&listHeader)) {			// While not NULL or pointing at our header.
+// 		if (trace->wantRefresh()) {					// Does this guy want refresh?
+//       	Serial.println("drawing()!!");
+//       	return true;									// Return true.
+// 		}
+//       trace = (drawObj*)trace->dllPrev;			// Bump up the list.
+// 	}
+// 	Serial.println("NOT drawing()");
+// 	return false; //theTouched!=NULL;
+// }
+
+
 // Counts & returns the number of objects in the list.           
 int viewMgr::numObjects(void) { return (int)listHeader.countTail(); }
 
@@ -329,7 +391,7 @@ void viewMgr::idle(void) {
 		theEvent = ourEventMgr.getEvent();	// Grab the event.
 		checkEvents(&theEvent);					// Pass it in and see if its handled.
 	}
-	checkRefresh();								// Check if we need to do some drawing?
+	checkRefresh();							// Check if we need to do some drawing?
 }
 
 

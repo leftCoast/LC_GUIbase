@@ -73,7 +73,7 @@ class eventObj	:	public linkListObj {
 // ***************************************************
 // eventMgr: This is the object that creates the events.
 // Once created, the events are queued up for the viewMgr
-// to dispatch them to its drawObj(s). After an even has
+// to dispatch them to its drawObj(s). After an event has
 // been dispatched, the eventMgr recycles the event's
 // memory.
 // ***************************************************
@@ -90,6 +90,7 @@ class eventMgr :	public queue,
     			void			flushEvents(void);
     			bool			haveEvent(void);
 				event			getEvent(void);
+				bool			active(void);
 				
 				void			addEvent(eventType inType);
 	virtual	void			push(eventObj* newEventObj);
