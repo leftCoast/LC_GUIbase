@@ -25,7 +25,8 @@ class displayObj {
 				int	gY(int lY);
 				int	lX(int gX);
 				int	lY(int gY);
-				point	lP(point gP);
+				point	lP(point* gP);
+				point	gP(point* lP);
 				
 	virtual	int	width(void);
 	virtual	int	height(void);

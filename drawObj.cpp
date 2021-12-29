@@ -62,6 +62,13 @@ bool drawObj::wantRefresh(void) { return needRefresh; }
 void drawObj::setNeedRefresh(bool refresh) { needRefresh = refresh; }
 
 
+void drawObj::aTouchAbove(void) {
+
+	setNeedRefresh();
+	viewList.touchAllAbove(this);
+}  
+
+
 void drawObj::setLocation(int inX,int inY) {
 
 	lastX = x;					// Just in the off chance we're doing screen animation.
@@ -231,46 +238,6 @@ drawObj*		currentFocus	= NULL;	// Totally global because? There's only ONE user.
 drawObj*		theTouched		= NULL;	// Who's accepted a finger touch on the screen?
 bool			drawing			= false;
 
-/*
-drawMonitor	drawNotify;				// When drawing is complete, you can get notified.
-
-drawMonitor::drawMonitor(void)
-	: idler() { 
-	
-	waitTimer.setTime(5);
-	callback = NULL;
-	count = 0;
-}
-	
-		
-drawMonitor::~drawMonitor(void) {  }
-
-	
-void drawMonitor::setCallback(void(*funct)(void)) {
-	Serial.println("drawMonitor::setCallback()");
-	callback = funct;		// Save off the function potiner. Or NULL..
-	count = 0;				// Zero out the count.
-	hookup();				// Just in case we haven't been.. Hookup.
-}
-
-
-void drawMonitor::idle(void) {
-	
-	if (callback) {						// If we have a non-null callback..
-		if (waitTimer.ding()) {			// If our timer has expired..
-			if (viewList.drawing()) {	// If we are still doing the drawing thing..
-				count = 0;					// Re-zero out the counter.
-			} else if (count<4) {		// Else, NOT doing drawing thing and the count is less than X..
-				count++;						// Bump up the count.
-			} else {							// Else, NOT doing drawing  and the count is >= X..
-				callback();					// Call the callback.
-				setCallback(NULL);		// Loose the one shot callback pointer.
-			}
-			waitTimer.start();			// In all cases, restart the timer.
-		}
-	}
-}
-*/			
 
 void	setFocusPtr(drawObj* newFocus) {
 
@@ -314,7 +281,7 @@ bool viewMgr::checkEvents(event* theEvent) {
 	point		lPoint;
 
 	if (screen->hasTouchScreen()) {								// Sanity! Does it even have the hardware?
-		lPoint = screen->lP(theEvent->mTouchPos);				// Possibly we're sublist, localize.
+		lPoint = screen->lP(&(theEvent->mTouchPos));			// Possibly we're sublist, localize.
 		if (theTouched==NULL) {										// No one has accepted a touch yet.					
 			trace = theList();										// Make sure we're at the top.
 			while(trace) {												// While we have something to work with.
@@ -351,26 +318,6 @@ void viewMgr::checkRefresh(void) {
 }
 
 
-// There are times when you need to make sure all the redrawing has stopped before doing
-// something else. Like bringing the screen up, or adding a new modal to the list. Here's
-// where you can find that kind of thing out.
-// bool viewMgr::drawing(void) {
-// 
-// 	drawObj*	trace;
-// 	Serial.println("drawing() ??");
-// 	trace = (drawObj*)listHeader.getLast();		// make sure we're at the bottom.
-// 	while(trace && trace!=(&listHeader)) {			// While not NULL or pointing at our header.
-// 		if (trace->wantRefresh()) {					// Does this guy want refresh?
-//       	Serial.println("drawing()!!");
-//       	return true;									// Return true.
-// 		}
-//       trace = (drawObj*)trace->dllPrev;			// Bump up the list.
-// 	}
-// 	Serial.println("NOT drawing()");
-// 	return false; //theTouched!=NULL;
-// }
-
-
 // Counts & returns the number of objects in the list.           
 int viewMgr::numObjects(void) { return (int)listHeader.countTail(); }
 
@@ -380,6 +327,18 @@ drawObj* viewMgr::getObj(int index) { return (drawObj*)listHeader.getTailObj((in
 
 
 drawObj* viewMgr::theList(void) { return (drawObj*)listHeader.getTailObj(0); }
+
+
+void viewMgr::touchAllAbove(drawObj* fromMe) {
+
+	drawObj* trace;
+	
+	trace = theList();
+	while(trace && trace!=fromMe) {
+		trace->setNeedRefresh();
+		trace = (drawObj*)trace->dllNext;		// Bump down the list.
+	}
+}
 
 
 // We have time to do stuff, NOT A LOT!

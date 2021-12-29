@@ -37,12 +37,22 @@ int displayObj::lX(int gX) { return gX - offsetX; }
 int displayObj::lY(int gY) { return gY - offsetY; }
 	
 	
-point	displayObj::lP(point gP) {
+point	displayObj::lP(point* gP) {
 
 	point aPt;
 	
-	aPt.x = gP.x -  offsetX;
-	aPt.y = gP.y -  offsetY;
+	aPt.x = gP->x - offsetX;
+	aPt.y = gP->y - offsetY;
+	return aPt;
+}
+
+
+point	displayObj::gP(point* lP) {
+
+	point aPt;
+	
+	aPt.x = lP->x + offsetX;
+	aPt.y = lP->y + offsetY;
 	return aPt;
 }
 	

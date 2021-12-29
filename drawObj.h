@@ -27,6 +27,7 @@ class drawObj : public rect, public dblLinkListObj {
     
    virtual	bool		wantRefresh(void);
    virtual	void		setNeedRefresh(bool=true);
+   			void		aTouchAbove(void);
 	virtual	void		setLocation(int x,int y);
    virtual	void  	draw(void);												// Call this one. Don't inherit this one.
    virtual	void		eraseSelf(void);										// Mostly you can ignore this one. Used for animation.
@@ -60,23 +61,6 @@ protected:
 // idle time.
 // ***************************************************************
 
-/*
-// Sometimes you need to know when all the drawing nonsense has been completed. If this is
-// the case you can use this to get a callback when that happens.
-class drawMonitor :	public idler {
-
-	public:
-				drawMonitor(void);	
-	virtual	~drawMonitor(void);
-	
-	virtual	void setCallback(void(*funct)(void));
-	virtual	void idle(void);
-	
-				timeObj	waitTimer;
-				void		(*callback)(void);
-				int		count;
-};
-*/
 
 class viewMgr : public idler {
     
@@ -91,6 +75,7 @@ public:
 				int		numObjects(void);
 				drawObj*	getObj(int index);
 				drawObj*	theList(void);
+				void		touchAllAbove(drawObj* fromMe);
     virtual void    	idle(void);
     
             drawObj	listHeader;				// Header of the drawObj list;
