@@ -1,4 +1,4 @@
- #include "displayObj.h"
+ #include <displayObj.h>
 
   
 displayObj::displayObj(bool inGraphic,bool inColor,bool inTouch,bool inSD,bool inReadable) {
