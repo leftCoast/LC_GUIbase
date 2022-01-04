@@ -159,6 +159,7 @@ void eventMgr::addEvent(eventType inType) {
 	event*		newEvent;
 	eventObj*	newEventObj;
 	
+	if (mTouchPos.x==240||mTouchPos.y==320) return;					// Bougus numbers show up like this.. (HACK) JLL - 1/2022
 	newEvent = NULL;															// The pointer needs to start as NULL.
 	if (resizeBuff(sizeof(event),(uint8_t**)&newEvent)) {			// Becuse we allocate with resizeBuff();
 		switch(inType) {

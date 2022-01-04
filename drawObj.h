@@ -13,7 +13,7 @@
 // ***************************************************************
 
 
-enum eventSet	{ noEvents, touchLift, fullClick, dragEvents };
+enum eventSet	{ noEvents, touchLift, fullClick, dragEvents, touchNDrag };
 
 
 class drawObj : public rect, public dblLinkListObj {

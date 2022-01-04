@@ -127,6 +127,9 @@ eventSet drawObj::getEventSet(void) { return mEventSet; }
 //nullEvent, touchEvent, liftEvent, dragBegin, dragOn, clickEvent
 bool drawObj::acceptEvent(event* inEvent,point* locaPt) {
 
+	//point currentPt(inEvent->mLastPos);
+	
+	
 	switch (mEventSet) {
 		case noEvents		: return false;			// noEvents, pass on..
 		case touchLift		: 								// Classic button events, clicked lets you draw clicked.
@@ -168,10 +171,34 @@ bool drawObj::acceptEvent(event* inEvent,point* locaPt) {
 				doAction(inEvent,locaPt);					// Do our stuff.
 				return true;									// Again, tell the world the event has been accepted.
 			}
-			break;
-		}
-		return false;
+		break;
+		case touchNDrag	:								// Things that move by touch.
+			if (inEvent->mType==touchEvent) {		// If its a touch..
+				if (inRect(locaPt)) {					// - and if its on us..
+					clicked		= true;					// Might want to show we're clicked on.
+					doAction(inEvent,locaPt);			// Do those things we do.
+					theTouched	= this;					// Tell the world WE are accepting this event set.
+					needRefresh = true;					// touchLift doesn't get a lift event. So it needs the setRefresh here.
+					return true;							// Tell the world the event has been accepted.
+				}
+			} 
+			if (inEvent->mType==dragBegin) {			// If, the dragging finger has started..
+				if (inRect(locaPt)) {					// and if its on us..
+					doAction(inEvent,&currentPt);			// Do our stuff.
+					theTouched	= this;					// Tell the world WE are accepting this event set.
+					return true;
+				}
+			} else if (inEvent->mType==dragOn) {		// still moving,
+				doAction(inEvent,&currentPt);					// Stil dragging? Keep drawing.
+				return true;									// Event has been accepted.
+			} else if (inEvent->mType==liftEvent) {	// Done dragging.
+				doAction(inEvent,&currentPt);					// Do our stuff.
+				return true;									// Again, tell the world the event has been accepted.
+			}
+		break;
 	}
+	return false;
+}
 
 // 										****** doAction() ******
 //
