@@ -126,9 +126,6 @@ eventSet drawObj::getEventSet(void) { return mEventSet; }
 
 //nullEvent, touchEvent, liftEvent, dragBegin, dragOn, clickEvent
 bool drawObj::acceptEvent(event* inEvent,point* locaPt) {
-
-	//point currentPt(inEvent->mLastPos);
-	
 	
 	switch (mEventSet) {
 		case noEvents		: return false;			// noEvents, pass on..
@@ -184,21 +181,22 @@ bool drawObj::acceptEvent(event* inEvent,point* locaPt) {
 			} 
 			if (inEvent->mType==dragBegin) {			// If, the dragging finger has started..
 				if (inRect(locaPt)) {					// and if its on us..
-					doAction(inEvent,&currentPt);			// Do our stuff.
+					doAction(inEvent,locaPt);			// Do our stuff.
 					theTouched	= this;					// Tell the world WE are accepting this event set.
 					return true;
 				}
 			} else if (inEvent->mType==dragOn) {		// still moving,
-				doAction(inEvent,&currentPt);					// Stil dragging? Keep drawing.
+				doAction(inEvent,locaPt);					// Stil dragging? Keep drawing.
 				return true;									// Event has been accepted.
 			} else if (inEvent->mType==liftEvent) {	// Done dragging.
-				doAction(inEvent,&currentPt);					// Do our stuff.
+				doAction(inEvent,locaPt);					// Do our stuff.
 				return true;									// Again, tell the world the event has been accepted.
 			}
 		break;
 	}
 	return false;
 }
+
 
 // 										****** doAction() ******
 //
