@@ -125,15 +125,15 @@ eventSet drawObj::getEventSet(void) { return mEventSet; }
 
 
 //nullEvent, touchEvent, liftEvent, dragBegin, dragOn, clickEvent
-bool drawObj::acceptEvent(event* inEvent,point* locaPt) {
+bool drawObj::acceptEvent(event* inEvent,point* localPt) {
 	
 	switch (mEventSet) {
 		case noEvents		: return false;			// noEvents, pass on..
 		case touchLift		: 								// Classic button events, clicked lets you draw clicked.
 			if (inEvent->mType==touchEvent) {		// If its a touch..
-				if (inRect(locaPt)) {					// - and if its on us..
+				if (inRect(localPt)) {					// - and if its on us..
 					clicked		= true;					// Might want to show we're clicked on.
-					doAction(inEvent,locaPt);			// Do those things we do.
+					doAction(inEvent,localPt);			// Do those things we do.
 					theTouched	= this;					// Tell the world WE are accepting this event set.
 					needRefresh = true;					// touchLift doesn't get a lift event. So it needs the setRefresh here.
 					return true;							// Tell the world the event has been accepted.
@@ -147,49 +147,48 @@ bool drawObj::acceptEvent(event* inEvent,point* locaPt) {
 			break;
 		case fullClick 	:								// Things like edit fields. A click changes their state.
 			if (inEvent->mType==clickEvent) {		// If its a click event, that matches.
-				if (inRect(locaPt)) {					// and if its on us..
+				if (inRect(localPt)) {					// and if its on us..
 					clicked		= false;					// No longer clicked by the time you see this.
-					doAction(inEvent,locaPt);			// Do the action.
+					doAction(inEvent,localPt);			// Do the action.
 					return true;							// We don't set touched because this is a one shot event.
 				}
 			}
 			break;
 		case dragEvents	:								// Things that move by touch.
 			if (inEvent->mType==dragBegin) {			// If, the dragging finger has started..
-				if (inRect(locaPt)) {					// and if its on us..
-					doAction(inEvent,locaPt);			// Do our stuff.
+				if (inRect(localPt)) {					// and if its on us..
+					doAction(inEvent,localPt);			// Do our stuff.
 					theTouched	= this;					// Tell the world WE are accepting this event set.
 					return true;
 				}
 			} else if (inEvent->mType==dragOn) {		// still moving,
-				doAction(inEvent,locaPt);					// Stil dragging? Keep drawing.
+				doAction(inEvent,localPt);					// Stil dragging? Keep drawing.
 				return true;									// Event has been accepted.
 			} else if (inEvent->mType==liftEvent) {	// Done dragging.
-				doAction(inEvent,locaPt);					// Do our stuff.
+				doAction(inEvent,localPt);					// Do our stuff.
 				return true;									// Again, tell the world the event has been accepted.
 			}
 		break;
 		case touchNDrag	:								// Things that move by touch.
 			if (inEvent->mType==touchEvent) {		// If its a touch..
-				if (inRect(locaPt)) {					// - and if its on us..
+				if (inRect(localPt)) {					// If the touch is on us..
 					clicked		= true;					// Might want to show we're clicked on.
-					doAction(inEvent,locaPt);			// Do those things we do.
 					theTouched	= this;					// Tell the world WE are accepting this event set.
-					needRefresh = true;					// touchLift doesn't get a lift event. So it needs the setRefresh here.
+					doAction(inEvent,localPt);			// Do those things we do.
 					return true;							// Tell the world the event has been accepted.
 				}
 			} 
 			if (inEvent->mType==dragBegin) {			// If, the dragging finger has started..
-				if (inRect(locaPt)) {					// and if its on us..
-					doAction(inEvent,locaPt);			// Do our stuff.
-					theTouched	= this;					// Tell the world WE are accepting this event set.
+				if (inRect(localPt)) {					// and if its on us..
+					doAction(inEvent,localPt);			// Do our stuff.
 					return true;
 				}
 			} else if (inEvent->mType==dragOn) {		// still moving,
-				doAction(inEvent,locaPt);					// Stil dragging? Keep drawing.
+				doAction(inEvent,localPt);					// Stil dragging? Keep drawing.
 				return true;									// Event has been accepted.
 			} else if (inEvent->mType==liftEvent) {	// Done dragging.
-				doAction(inEvent,locaPt);					// Do our stuff.
+				clicked		= false;							// Might want to show we're NOT clicked on.
+				doAction(inEvent,localPt);					// Do our stuff.
 				return true;									// Again, tell the world the event has been accepted.
 			}
 		break;
@@ -306,7 +305,7 @@ bool viewMgr::checkEvents(event* theEvent) {
 	point		lPoint;
 
 	if (screen->hasTouchScreen()) {								// Sanity! Does it even have the hardware?
-		lPoint = screen->lP(&(theEvent->mTouchPos));			// Possibly we're sublist, localize.
+		lPoint = screen->lP(&(theEvent->mLastPos));			// Possibly we're sublist, localize.
 		if (theTouched==NULL) {										// No one has accepted a touch yet.					
 			trace = theList();										// Make sure we're at the top.
 			while(trace) {												// While we have something to work with.
@@ -457,20 +456,20 @@ void drawGroup::setLocation(int x,int y) {
 
 // First we see if a list item wants the click. then, if not
 // and we are accepting clicks, we take it.
-bool drawGroup::acceptEvent(event* inEvent,point* locaPt) {
+bool drawGroup::acceptEvent(event* inEvent,point* localPt) {
    
    bool	success;
    
    success = false;												// No accepted yet.
    if (theTouched==this) {										// Oh God no! Its me?!
-   	return drawObj::acceptEvent(inEvent,locaPt);		// In this one case, we are being dragged as a group.
+   	return drawObj::acceptEvent(inEvent,localPt);		// In this one case, we are being dragged as a group.
    }
-	if (inRect(locaPt)) {										// It's in our list or us, somewhere.
+	if (inRect(localPt)) {										// It's in our list or us, somewhere.
 		screen->pushOffset(x,y);								// Ok, push our offset for the sublist.
 		success = checkEvents(inEvent);						// See if they handle it.
 		screen->popOffset(x,y);									// Pop off the offset.
 		if (!success) {											// If no one took it.
-			return drawObj::acceptEvent(inEvent,locaPt);	// We return the standard check on ourselves.
+			return drawObj::acceptEvent(inEvent,localPt);	// We return the standard check on ourselves.
 		}
 	}
 	return success;												// Return the ultimate result.

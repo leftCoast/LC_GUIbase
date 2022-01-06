@@ -36,9 +36,9 @@ class drawObj : public rect, public dblLinkListObj {
 	virtual	bool		haveFocus(void);										// Do we have focus or not?
 	virtual	void		setEventSet(eventSet inEventSet);				// Want to change our event set on the fly?
 	virtual	eventSet	getEventSet(void);									// Want to see what this guys even set is?
-  	virtual	bool		acceptEvent(event* inEvent,point* locaPt);	// Is this event for us?
+  	virtual	bool		acceptEvent(event* inEvent,point* localPt);	// Is this event for us?
   	virtual	void  	doAction(void);										// Override me for action!
-  	virtual	void  	doAction(event* inEvent,point* locaPt);		//	Special for them that drag around.
+  	virtual	void  	doAction(event* inEvent,point* localPt);		//	Special for them that drag around.
           	void		setCallback(void(*funct)(void));					// Or use a callback.
   
 protected:
@@ -105,7 +105,7 @@ class drawGroup : public drawObj, public viewMgr {
 	virtual	void		setGroupRefresh(bool refresh=true);
 	virtual	bool		wantRefresh(void);
 	virtual	void		setNeedRefresh(bool refresh=true);
-  	virtual	bool		acceptEvent(event* inEvent,point* locaPt);	// Is this event for us?
+  	virtual	bool		acceptEvent(event* inEvent,point* localPt);	// Is this event for us?
   	virtual	void  	addObj(drawObj* newObj);
   	virtual	void  	draw(void);
   	virtual	void    	idle(void);

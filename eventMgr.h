@@ -34,8 +34,8 @@ struct event {
 	unsigned long	mLastMs;
 	unsigned long	mNumMs;
 	
-	point				mTouchPos;
-	point				mLastPos;
+	point				mTouchPos;	// Where the touch began.
+	point				mLastPos;	// Where the touch is NOW.
 	
 	int				mXDist;
 	int				mYDist;

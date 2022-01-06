@@ -2,6 +2,7 @@
 #include <resizeBuff.h>
 #include <screen.h>
 
+//#include <debug.h>
 
 // Our global event manager.
 eventMgr 	ourEventMgr;
@@ -159,7 +160,6 @@ void eventMgr::addEvent(eventType inType) {
 	event*		newEvent;
 	eventObj*	newEventObj;
 	
-	if (mTouchPos.x==240||mTouchPos.y==320) return;					// Bougus numbers show up like this.. (HACK) JLL - 1/2022
 	newEvent = NULL;															// The pointer needs to start as NULL.
 	if (resizeBuff(sizeof(event),(uint8_t**)&newEvent)) {			// Becuse we allocate with resizeBuff();
 		switch(inType) {
@@ -184,9 +184,9 @@ void eventMgr::addEvent(eventType inType) {
 				newEvent->mAngle			= 0;
 			break;
 			case liftEvent		:
-				newEvent->mType			= liftEvent;					
-				newEvent->mTouchMs		= mTouchMs;					
-				newEvent->mLastMs			= millis();
+				newEvent->mType			= liftEvent;												
+				newEvent->mTouchMs		= mTouchMs;													// When it all started.
+				newEvent->mLastMs			= millis();													// mLastMs - Basically the lift time.
 				newEvent->mNumMs			= abs(newEvent->mLastMs-mTouchMs);					// Calculate the number of milliseconds since touch.
 	
 				newEvent->mTouchPos		= mTouchPos;												// Saved when we got the touch.					
@@ -274,40 +274,39 @@ void eventMgr::push(eventObj* newEventObj) { queue::push((linkListObj*)newEventO
 eventObj* eventMgr::pop(void) { return (eventObj*)queue::pop();	}
 
 
+// Grab touch and drag moves from the finger. ALL of this is in global coordinates.
 void eventMgr::idle(void) {
-	
+
 	float	moveDist;
 	
-	if (mTouched) {											// Last time we checked we were mTouched.
-		if (!screen->touched()) {							// This time we are NOT mTouched.
-			addEvent(liftEvent);								// This means we got a lift.
-			mDragging = false;								// No matter, we're not mDragging.
-			mTouched = false;									// Save off that we're no longer mTouched.
-			if (!ding()) {										// If it was a "short" touch.
-				addEvent(clickEvent);						// That'll pass for a "click".
-			}
-		} else {													// Else, still mTouched.
-			mLastPos = screen->getPoint();				//	Update the last point we saw.
-			moveDist = distance(mTouchPos,mLastPos);	// Calculate the total distance.	
-			if (ding()||moveDist>DRAG_DIST) {			// If our timer expired or were moving, it's a drag.
-				if (!mDragging) {								// If we we weren't already dagging..
-					addEvent(dragBegin);						// Create a drag begin event.
-					mDragging = true;							// Note that we are mDragging.
-				} else if (isEmpty()) {						// Else if already mDragging AND we have an empty queue.
-					addEvent(dragOn);							// We pop in a dragOn event. Don't want to swamp the queue.
-				}
-			}
-		}
-	} else {											// Else we were not mTouched last time we checked..
-		if (screen->touched()) {				// And we ARE mTouched now..
-			mTouchMs = millis();					// Save time..
-			mTouchPos = screen->getPoint();	// And place of touch!
-			addEvent(touchEvent);			// Create a touch event.
-			mLastPos = screen->getPoint();	// Init. the last position seen. Not used for touchEvent.
-			mTouched = true;						// Note that we've been mTouched.
-			start();									// Start up the drag timer.
-		}
-	}
-}
-
+	if (screen->touched()) {									// If we've been touched! Or, are still touched..
+		mLastPos = screen->getPoint();						//	Update the last point we saw.
+		if (mTouched) {											// If last time we checked we were mTouched.
+			moveDist = distance(mTouchPos,mLastPos);		// Calculate the total distance from initial touch.
+			if (mDragging) {										// If we're already dragging..
+				if (isEmpty()) {									// If we have an empty queue.
+ 					addEvent(dragOn);								// We pop in a dragOn event. Don't swamp the queue.
+ 				}														// 
+			} else if (ding()||moveDist>DRAG_DIST) {		// If our drag timer expired, or were moving, it's a drag.	
+				mDragging = true;									// Note that we are mDragging.
+				addEvent(dragBegin);								// Create a drag begin event.
+			}															//
+		} else {														// Else, this is initial contact!
+			mTouchMs = millis();									// Save touch time..
+			mTouchPos = mLastPos;								// Grab our initial location.
+			mTouched = true;										// Note that we've been mTouched. (Unwanted personal contact!)
+			start();													// Start up the drag timer.
+			addEvent(touchEvent);								// Create a touch event.
+		}																//
+	} else {															// Else, we are not being touched. (Now who's feeling lonely?)
+		if (mTouched) {											// Last time we checked we were mTouched.
+			mTouched = false;										// Save off that we're no longer mTouched.
+			mDragging = false;									// No matter, we're not mDragging.
+			addEvent(liftEvent);									// This means we got a lift.
+			if (!ding()) {											// If it was a "short" touch.
+ 				addEvent(clickEvent);							// That'll pass for a "click".
+ 			}
+ 		}
+ 	}
+ }
 
