@@ -6,7 +6,7 @@
 #include <timeObj.h>
 #include <baseGraphics.h>
 
-#define	DRAG_TIME	500	// How many milliseconds before it goes from a click to a drag?
+#define	DRAG_TIME	150	// How many milliseconds before it goes from a click to a drag?
 #define	DRAG_DIST	10		// If the finger moves further than this, we'll call it a drag.
 // ***************************************************************
 // Here we have the management of screen actions. Get the touches
