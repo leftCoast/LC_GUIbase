@@ -40,7 +40,7 @@ class displayObj {
 	virtual	void	setTextWrap(bool inWrap);
 	virtual	void	setFont(const GFXfont* font);
 	virtual	void	setCursor(int inX,int inY);
-	virtual	void	drawText(char* inText);
+	virtual	void	drawText(const char* inText);
 	virtual	void  drawChar(int x,int y,char inChar,colorObj* fColor,colorObj* bColor,int size);
 	virtual	void	fillScreen(colorObj* inColor);
 	virtual	void	fillRect(int locX,int locY,int width,int height, colorObj* inColor);

@@ -69,7 +69,7 @@ void displayObj::setTextSize(byte inSize) { }
 void displayObj::setTextWrap(bool inWrap) { }
 void displayObj::setFont(const GFXfont* font) { }
 void displayObj::setCursor(int inX,int inY) { }
-void displayObj::drawText(char* inText) { }
+void displayObj::drawText(const char* inText) { }
 void displayObj::drawChar(int x,int y,char inChar,colorObj* fColor,colorObj* bColor,int size) { }
 void displayObj::fillScreen(colorObj* inColor) {  }
 void displayObj::fillRect(int locX,int locY,int width,int height,colorObj* inColor) { }
