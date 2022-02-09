@@ -83,6 +83,8 @@ void displayObj::drawRoundRect(rect* inRect,int radius,colorObj* inColor){ drawR
 void displayObj::drawCircle(int locX,int locY,int inDiam, colorObj* inColor){ }
 void displayObj::drawCircleHelper(int locX,int locY,int inRad,byte corner,colorObj* inColor) { }
 void displayObj::fillCircle(int locX,int locY,int inDiam, colorObj* inColor){ }
+void displayObj::drawTriangle(point* pt0,point* pt1,point* pt2,colorObj* inColor) { }
+void displayObj::fillTriangle(point* pt0,point* pt1,point* pt2,colorObj* inColor) { }
 void displayObj::drawVLine(int locX,int locY,int height,colorObj* inColor) { }
 void displayObj::drawHLine(int locX,int locY,int width,colorObj* inColor) { }
 void displayObj::drawLine(int locX,int locY,int locX2,int locY2,colorObj* inColor) { }
@@ -153,7 +155,7 @@ void displayObj::blit(int locX,int locY,bitmap* inBitmap) {
 }
 
 
-point   displayObj::getPoint(void) {
+point displayObj::getPoint(void) {
   
   point defPnt;
   

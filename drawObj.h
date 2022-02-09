@@ -25,10 +25,10 @@ class drawObj : public rect, public dblLinkListObj {
   				drawObj(int inLocX, int inLocY, int inWidth,int inHeight,eventSet inEventSet=noEvents);
 	virtual	~drawObj();
     
-   virtual	bool		wantRefresh(void);
-   virtual	void		setNeedRefresh(bool=true);
-   			void		aTouchAbove(void);
-	virtual	void		setLocation(int x,int y);
+   virtual	bool		wantRefresh(void);									// Called by manager to see if I need to draw now.
+   virtual	void		setNeedRefresh(bool=true);							// Called to cause a redraw. (Used a LOT)
+   			void		aTouchAbove(void);									// I've changed. Going to draw. Everyone above, draw too.
+	virtual	void		setLocation(int x,int y);							// Changed our mind, moe it over here..
    virtual	void  	draw(void);												// Call this one. Don't inherit this one.
    virtual	void		eraseSelf(void);										// Mostly you can ignore this one. Used for animation.
    virtual 	void  	drawSelf(void);										// Inherit this one and make it yours.
@@ -38,17 +38,17 @@ class drawObj : public rect, public dblLinkListObj {
 	virtual	eventSet	getEventSet(void);									// Want to see what this guys even set is?
   	virtual	bool		acceptEvent(event* inEvent,point* localPt);	// Is this event for us?
   	virtual	void  	doAction(void);										// Override me for action!
-  	virtual	void  	doAction(event* inEvent,point* localPt);		//	Special for them that drag around.
-          	void		setCallback(void(*funct)(void));					// Or use a callback.
+	virtual	void  	doAction(event* inEvent,point* localPt);		//	Special for them that drag around.
+				void		setCallback(void(*funct)(void));					// Or use a callback.
   
 protected:
-  bool		needRefresh;
-  bool		focus;
-  eventSet	mEventSet;
-  bool		clicked;
-  void		(*callback)(void);
-  int			lastX;					// Yes, these are where we were before we moved.
-  int			lastY;
+				bool		needRefresh;											// I need to draw. When its time.
+				bool		focus;													// The user is lookin' at me!
+				eventSet	mEventSet;												// Things that I respond to.
+				bool		clicked;													// Oh Lord! She's touching me! (Touchscreen)
+				void		(*callback)(void);									// Function to call when touched. (Optional)
+				int		lastX;													// Yes, these are where we were,
+				int		lastY;													// before we moved.
 };
 
 

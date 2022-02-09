@@ -54,6 +54,8 @@ class displayObj {
 	virtual	void	drawCircle(int locX,int locY,int inDiam, colorObj* inColor);
 	virtual	void	drawCircleHelper(int locX,int locY,int inRad,byte corner,colorObj* inColor);
 	virtual	void	fillCircle(int locX,int locY,int inDiam, colorObj* inColor);
+	virtual	void	drawTriangle(point* pt0,point* pt1,point* pt2,colorObj* inColor);
+	virtual	void	fillTriangle(point* pt0,point* pt1,point* pt2,colorObj* inColor);
 	virtual	void	drawVLine(int locX,int locY,int height,colorObj* inColor);
 	virtual	void	drawHLine(int locX,int locY,int width,colorObj* inColor);
 	virtual	void	drawLine(int locX,int locY,int locX2,int locY2,colorObj* inColor);
