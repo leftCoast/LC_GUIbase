@@ -23,12 +23,16 @@ int	yDistance(point ptA,point ptB) { return ptB.y - ptA.y; }
 
 
 float distance(point ptA,point ptB) {
-
+	
+	float xDist;
+	float yDist;
 	float widthSq;
 	float heighSq;
 	
-	widthSq = pow(xDistance(ptA,ptB),2);
-	heighSq = pow(yDistance(ptA,ptB),2);
+	xDist = xDistance(ptA,ptB);
+	yDist = yDistance(ptA,ptB);
+	widthSq = xDist * xDist;
+	heighSq = yDist * yDist;
 	return sqrt(widthSq + heighSq);
 }
 
@@ -47,6 +51,20 @@ float	angle(point ptA,point ptB) {
 		angle = M_PI/2;
 	}
 	return angle;
+}
+
+
+// Rotate around the x.y axis. From current x,y location, angle (radians).
+// BUT this is only using ints so the accuracy is somewhat lacking.
+point	rotate(point ptA,float angle) {
+
+	point	res;
+	float	mag;
+	
+	mag = sqrt((ptA.x * ptA.x) + (ptA.y * ptA.y));
+	res.x = mag * cos(acos(ptA.x/mag)+angle);
+	res.y = mag * sin(asin(ptA.y/mag)+angle);
+	return res;
 }
 
 
