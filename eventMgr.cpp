@@ -68,6 +68,16 @@ void printEvent(event* anEvent) {
 */
 
 
+unsigned long lAbs(long val) {
+
+	if (val<0) {
+		return -val; 
+	} else {
+		return val;
+	}
+}
+	
+	
 eventObj::eventObj(event* inEvent) { mEvent = inEvent; }
 
 
@@ -187,7 +197,7 @@ void eventMgr::addEvent(eventType inType) {
 				newEvent->mType			= liftEvent;												
 				newEvent->mTouchMs		= mTouchMs;													// When it all started.
 				newEvent->mLastMs			= millis();													// mLastMs - Basically the lift time.
-				newEvent->mNumMs			= abs(newEvent->mLastMs-mTouchMs);					// Calculate the number of milliseconds since touch.
+				newEvent->mNumMs			= lAbs(newEvent->mLastMs-mTouchMs);					// Calculate the number of milliseconds since touch.
 	
 				newEvent->mTouchPos		= mTouchPos;												// Saved when we got the touch.					
 				newEvent->mLastPos		= mLastPos;													// Updated during idle time while touched.
@@ -206,7 +216,7 @@ void eventMgr::addEvent(eventType inType) {
 				newEvent->mType			= dragBegin;					
 				newEvent->mTouchMs		= mTouchMs;					
 				newEvent->mLastMs			= millis();
-				newEvent->mNumMs			= abs(newEvent->mLastMs-mTouchMs);					// Calculate the number of milliseconds since touch.
+				newEvent->mNumMs			= lAbs(newEvent->mLastMs-mTouchMs);					// Calculate the number of milliseconds since touch.
 	
 				newEvent->mTouchPos		= mTouchPos;												// Saved when we got the touch.					
 				newEvent->mLastPos		= mLastPos;													// Updated during idle time while touched.
@@ -225,7 +235,7 @@ void eventMgr::addEvent(eventType inType) {
 				newEvent->mType			= dragOn;					
 				newEvent->mTouchMs		= mTouchMs;					
 				newEvent->mLastMs			= millis();
-				newEvent->mNumMs			= abs(newEvent->mLastMs-mTouchMs);					// Calculate the number of milliseconds since touch.
+				newEvent->mNumMs			= lAbs(newEvent->mLastMs-mTouchMs);					// Calculate the number of milliseconds since touch.
 	
 				newEvent->mTouchPos		= mTouchPos;												// Saved when we got the touch.					
 				newEvent->mLastPos		= mLastPos;													// Updated during idle time while touched.
@@ -244,7 +254,7 @@ void eventMgr::addEvent(eventType inType) {
 				newEvent->mType			= clickEvent;					
 				newEvent->mTouchMs		= mTouchMs;					
 				newEvent->mLastMs			= millis();
-				newEvent->mNumMs			= abs(newEvent->mLastMs-mTouchMs);					// Calculate the number of milliseconds since touch.
+				newEvent->mNumMs			= lAbs(newEvent->mLastMs-mTouchMs);					// Calculate the number of milliseconds since touch.
 	
 				newEvent->mTouchPos		= mTouchPos;												// Saved when we got the touch.					
 				newEvent->mLastPos		= mLastPos;													// Updated during idle time while touched.
