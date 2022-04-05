@@ -124,7 +124,7 @@ void rect::setRect(rect* inRect) {
 void rect::setRect(point* inPt1,point* inPt2) {
 
   int locX = min(inPt1->x,inPt2->x);
-  int locY = max(inPt1->y,inPt2->y);
+  int locY = min(inPt1->y,inPt2->y);
   int width = abs((int)inPt1->x-(int)inPt2->x);
   int height = abs((int)inPt1->y-(int)inPt2->y);
   setLocation(locX,locY);
