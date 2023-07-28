@@ -68,7 +68,7 @@ void printEvent(event* anEvent) {
 */
 
 
-unsigned long lAbs(long val) {
+long lAbs(long val) {
 
 	if (val<0) {
 		return -val; 
@@ -187,7 +187,7 @@ void eventMgr::addEvent(eventType inType) {
 				newEvent->mYDist			= 0;
 				newEvent->mDist			= 0;
 	
-				newEvent->mXPixlePerSec	= 0;	
+				newEvent->mXPixlePerSec	= 0;	// LINE 190
 				newEvent->mYPixlePerSec	= 0;				
 				newEvent->mPixalPerSec	= 0;
 	
