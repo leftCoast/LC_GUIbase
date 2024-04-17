@@ -127,6 +127,7 @@ eventSet drawObj::getEventSet(void) { return mEventSet; }
 //nullEvent, touchEvent, liftEvent, dragBegin, dragOn, clickEvent
 bool drawObj::acceptEvent(event* inEvent,point* localPt) {
 	
+	
 	switch (mEventSet) {
 		case noEvents		: return false;			// noEvents, pass on..
 		case touchLift		: 								// Classic button events, clicked lets you draw clicked.
@@ -215,7 +216,7 @@ void drawObj::doAction(void) {
 }
 
 
-// *** MORE INCVOLVED ACTION ***
+// *** MORE INVOLVED ACTION ***
 // Override this for more involved action. Like dragging. (The event has global point.
 // We'll pass in local point. You may need it.) 
 void drawObj::doAction(event* inEvent,point* localPt) { doAction(); }

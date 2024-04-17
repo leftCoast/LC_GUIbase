@@ -167,21 +167,21 @@ bool eventMgr::active(void) {
 // can about an event.
 void eventMgr::addEvent(eventType inType) {
 
-	event*		newEvent;
-	eventObj*	newEventObj;
-	
+	event*		newEvent;		// A pointer to where the event info will live.
+	eventObj*	newEventObj;	// A pointer to the even object that will live in our queue and HOLD the pointer to the event info.. Wow!
+	//Serial.println("add event");
 	newEvent = NULL;															// The pointer needs to start as NULL.
 	if (resizeBuff(sizeof(event),(uint8_t**)&newEvent)) {			// Becuse we allocate with resizeBuff();
-		switch(inType) {
-			case nullEvent		: free(newEvent); return;				// We don't make nullEvents, we
-			case touchEvent	:
-				newEvent->mType			= touchEvent;					
+		switch(inType) {														// Check the flavor..
+			case nullEvent		: free(newEvent); return;				// We don't make nullEvents, we recycle a const one.
+			case touchEvent	:												// Touch event?
+				newEvent->mType			= touchEvent;					// Set the type.
 				newEvent->mTouchMs		= mTouchMs;						// Fist thing, grab the time.					
 				newEvent->mLastMs			= mTouchMs;						// Same time, we just touched.
 				newEvent->mNumMs			= 0;								// Calculate the number of milliseconds since last time.
 
 				newEvent->mTouchPos		= mTouchPos;					// Grab the location of the event.					
-				newEvent->mLastPos		= mTouchPos;
+				newEvent->mLastPos		= mTouchPos;					// And everything else we can.
 								
 				newEvent->mXDist			= 0;				
 				newEvent->mYDist			= 0;
@@ -193,8 +193,8 @@ void eventMgr::addEvent(eventType inType) {
 	
 				newEvent->mAngle			= 0;
 			break;
-			case liftEvent		:
-				newEvent->mType			= liftEvent;												
+			case liftEvent		:																			// liftEvent?
+				newEvent->mType			= liftEvent;												// Set the type.
 				newEvent->mTouchMs		= mTouchMs;													// When it all started.
 				newEvent->mLastMs			= millis();													// mLastMs - Basically the lift time.
 				newEvent->mNumMs			= lAbs(newEvent->mLastMs-mTouchMs);					// Calculate the number of milliseconds since touch.
@@ -212,10 +212,10 @@ void eventMgr::addEvent(eventType inType) {
 	
 				newEvent->mAngle			= angle(mTouchPos,mLastPos);							// Calculate the actual angle, in radians.
 			break;
-			case dragBegin		:
-				newEvent->mType			= dragBegin;					
-				newEvent->mTouchMs		= mTouchMs;					
-				newEvent->mLastMs			= millis();
+			case dragBegin		:																			// dragBegin?
+				newEvent->mType			= dragBegin;												// Set the type.
+				newEvent->mTouchMs		= mTouchMs;													// When it all started.
+				newEvent->mLastMs			= millis();													// What time is it now?
 				newEvent->mNumMs			= lAbs(newEvent->mLastMs-mTouchMs);					// Calculate the number of milliseconds since touch.
 	
 				newEvent->mTouchPos		= mTouchPos;												// Saved when we got the touch.					
@@ -281,7 +281,7 @@ void eventMgr::push(eventObj* newEventObj) { queue::push((linkListObj*)newEventO
 
 
 // And this. I was bit by doing it fast and loose earlier.
-eventObj* eventMgr::pop(void) { return (eventObj*)queue::pop();	}
+eventObj* eventMgr::pop(void) { return (eventObj*)queue::pop(); }
 
 
 // Grab touch and drag moves from the finger. ALL of this is in global coordinates.
@@ -290,6 +290,7 @@ void eventMgr::idle(void) {
 	float	moveDist;
 	
 	if (screen->touched()) {									// If we've been touched! Or, are still touched..
+		//Serial.println("touch!");
 		mLastPos = screen->getPoint();						//	Update the last point we saw.
 		if (mTouched) {											// If last time we checked we were mTouched.
 			moveDist = distance(mTouchPos,mLastPos);		// Calculate the total distance from initial touch.
