@@ -4,7 +4,7 @@
 #include <lists.h>
 #include <idlers.h>
 #include <baseGraphics.h>
-#include <screen.h>
+#include <displayObj.h>
 #include <eventMgr.h>
 
 // ***************************************************************

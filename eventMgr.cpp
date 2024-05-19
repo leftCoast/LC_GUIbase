@@ -1,6 +1,6 @@
 #include <eventMgr.h>
 #include <resizeBuff.h>
-#include <screen.h>
+#include <displayObj.h>
 
 //#include <debug.h>
 

@@ -13,6 +13,14 @@
 // hardware needs to run.
 
 
+// Rotation
+#define PORTRAIT      0  // Default narrow.
+#define LANDSCAPE     1  // Default wide, clockwise.
+#define INV_PORTRAIT  2  // Upside down narrow, clockwise.
+#define INV_LANDSCAPE 3  // Upside down wide, clockwise.
+
+
+
 class displayObj {    
 
 	public :
@@ -30,7 +38,7 @@ class displayObj {
 				
 	virtual	int	width(void);
 	virtual	int	height(void);
-	virtual	bool	dispObjBegin(void);
+	virtual	bool	begin(void);
   	virtual	void	startWrite(void);
   	virtual	void	endWrite(void);
 	virtual	void	setRotation(byte inRotation);
@@ -86,6 +94,9 @@ class displayObj {
 				bool			hasSD;
 				bool			readable;
 };
+
+
+extern displayObj* screen;
 
 #endif
 

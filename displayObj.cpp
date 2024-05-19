@@ -1,6 +1,8 @@
  #include <displayObj.h>
 
-  
+displayObj* screen = NULL;
+
+
 displayObj::displayObj(bool inGraphic,bool inColor,bool inTouch,bool inSD,bool inReadable) {
 
 	graphic = inGraphic;
@@ -61,7 +63,7 @@ int  displayObj::width(void) { return 0; }	// Better fill these two out..
 int  displayObj::height(void) { return 0; }	//
 void displayObj::startWrite(void) {  }
 void displayObj::endWrite(void) {  }
-bool displayObj::dispObjBegin(void) { return false; }
+bool displayObj::begin(void) { return false; }
 void displayObj::setRotation(byte inRotation) { }
 void displayObj::setTextColor(colorObj* inColor) { }
 void displayObj::setTextColor(colorObj* tColor,colorObj* bColor) { }
