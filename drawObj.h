@@ -28,7 +28,7 @@ class drawObj : public rect, public dblLinkListObj {
    virtual	bool		wantRefresh(void);									// Called by manager to see if I need to draw now.
    virtual	void		setNeedRefresh(bool=true);							// Called to cause a redraw. (Used a LOT)
    			void		aTouchAbove(void);									// I've changed. Going to draw. Everyone above, draw too.
-	virtual	void		setLocation(int x,int y);							// Changed our mind, moe it over here..
+	virtual	void		setLocation(int x,int y);							// Changed our mind, move it over here..
    virtual	void  	draw(void);												// Call this one. Don't inherit this one.
    virtual	void		eraseSelf(void);										// Mostly you can ignore this one. Used for animation.
    virtual 	void  	drawSelf(void);										// Inherit this one and make it yours.
