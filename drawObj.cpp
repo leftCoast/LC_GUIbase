@@ -43,13 +43,13 @@ drawObj::drawObj(int inLocX, int inLocY, int inWidth,int inHeight,eventSet inEve
 // Wake up! Time to die.
 drawObj::~drawObj() {
 
-		if (currentFocus == this) {	// We were great..
-			currentFocus = NULL;			// And how the great have fallen. (But do it quiet like. We don't want a setFocus call right now!)
-		}
-		if (theTouched == this) {		// We were the movers and shakers..
-			theTouched = NULL;			// But, its all over now.
-		}
+	if (currentFocus == this) {	// We were great..
+		currentFocus = NULL;			// And how the great have fallen. (But do it quiet like. We don't want a setFocus call right now!)
 	}
+	if (theTouched == this) {		// We were the movers and shakers..
+		theTouched = NULL;			// But, its all over now.
+	}
+}
 
 
 // When the manager asks if we want a refresh..
