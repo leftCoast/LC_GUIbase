@@ -48,6 +48,9 @@ class displayObj {
 	virtual	void	setTextWrap(bool inWrap);
 	virtual	void	setFont(const GFXfont* font);
 	virtual	void	setCursor(int inX,int inY);
+	virtual	int	getCursorX(void);
+	virtual	int	getCursorY(void);
+	virtual	rect	getTextRect(const char* inText);
 	virtual	void	drawText(const char* inText);
 	virtual	void  drawChar(int x,int y,char inChar,colorObj* fColor,colorObj* bColor,int size);
 	virtual	void	fillScreen(colorObj* inColor);
@@ -74,6 +77,7 @@ class displayObj {
 	virtual	void	drawPixelInvert(int x,int y);
 	virtual	void	frameRectInvert(int x,int y,int width,int height);
 	virtual	void	fillRectGradient(int inX,int inY,int width,int height,colorObj* startColor,colorObj* endColor,bool rising=true,bool vertical=true);
+	virtual	void	fillRectGradient(rect* inRect,colorObj* startColor,colorObj* endColor,bool rising=true,bool vertical=true);
 	virtual	void	fillScreenGradient(colorObj* startColor,colorObj* endColor,bool rising=true,bool vertical=true);
 	
 	virtual	point	getPoint(void);
@@ -93,6 +97,8 @@ class displayObj {
 				bool			hasTouch;
 				bool			hasSD;
 				bool			readable;
+				bool			boundsBegin;
+				bool			boundsRecording;
 };
 
 

@@ -40,12 +40,12 @@ class rect {
 	virtual	~rect(void);
 
 	virtual	void  setLocation(int inX, int inY);
-				void  setSize(int inWidth,int inHeight);
-  			  	void  setRect(rect* inRect);                 					// Got a rect? Make this one the same.
-  			  	void  setRect(point* inPt1,point* inPt2);							// Or two points..
-  			  	void	setRect(int inX, int inY, int inWidth,int inHeight);	// Or the usual way..
-          	void	insetRect(int inset);											// Inset all sides by this much. Or expand if negative.
-          	void	addRect(rect* inRect);											// Become the rect that spans ourself and this incoming rect.
+	virtual	void  setSize(int inWidth,int inHeight);
+  	virtual	void  setRect(rect* inRect);                 					// Got a rect? Make this one the same.
+  	virtual	void  setRect(point* inPt1,point* inPt2);							// Or two points..
+  	virtual	void	setRect(int inX, int inY, int inWidth,int inHeight);	// Or the usual way..
+  	virtual	void	insetRect(int inset);											// Inset all sides by this much. Or expand if negative.
+   virtual	void	addRect(rect* inRect);											// Become the rect that spans ourself and this incoming rect.
           	int  	maxX(void);                            					// Where's our last pixel?
           	int  	maxY(void);                            					// Same as obove but in the Y direction.
           	int  	minX(void);                            					// Where's our first pixel?
@@ -55,6 +55,9 @@ class rect {
   			  	point	getCorner(rectPt corner);										// Pass back the corner point.
 				bool	overlap(rect* checkRect);										// Is that rect touching us?
 				bool	isSubRectOf(rect* checkRect);									// Are we contained in that rect?
+				void	startBoundsRec(void);											// Clear out the rect and start recording points to it.
+				void	addBoundsPt(point* inPt);										// Add in data as a point.
+				void	addBoundsPt(int x,int y);										// Add in data as x,y values.    
 				//void	printRect(char* = "Rect : ");
 					
 				int	x;

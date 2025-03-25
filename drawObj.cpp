@@ -4,13 +4,13 @@
 
 drawObj::drawObj() {
 
-  needRefresh	= true;	// Well Duh! We never been drawn yet!
-  focus			= false;			// But we're hopefull.
-  clicked		= false;
-  mEventSet		= noEvents;	// 'Cause this is actually the default.
-  callback		= NULL;		// And, no.. We have none of this either.
-  lastX			= 0;				// Yes, these are where we were before we moved.
-  lastY			= 0;
+	needRefresh	= true;			// Well Duh! We never been drawn yet!
+	focus			= false;			// But we're hopefull.
+	clicked		= false;			// No clicking either. Least not yet.
+	mEventSet		= noEvents;	// 'Cause this is actually the default.
+	callback		= NULL;			// And, no.. We have none of this either.
+	lastX			= 0;				// Yes, these are where we were before we moved.
+	lastY			= 0;
 }
 
 
@@ -36,7 +36,7 @@ drawObj::drawObj(int inLocX, int inLocY, int inWidth,int inHeight,eventSet inEve
 	mEventSet	= inEventSet;
 	callback		= NULL;		// And, no.. We have none of this either.
 	lastX			= 0;			// Yes, these are where we were before we moved.
-	lastY			= 0;
+	lastY			= 0;			// These jokes are getting so tired!
 }
 
 

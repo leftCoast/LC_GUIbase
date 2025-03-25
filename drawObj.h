@@ -85,7 +85,7 @@ extern	viewMgr		viewList;								// Our global GUI manager.
 extern 	drawObj*		theTouched;								// Who's accepted a finger touch on the screen?
 extern	drawObj*		currentFocus;							// Focus goes hand in hand with view management.
 extern 	void			setFocusPtr(drawObj* newFocus);	// Anyone can set focus by calling this function.
-extern 	bool			drawing;
+extern 	bool			drawing;									// This is ALWAYS true. WTF?!
 
 // ***************************************************************
 // The idea here is to have a draw object that manages a group of

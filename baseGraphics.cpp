@@ -68,19 +68,6 @@ point	rotate(point ptA,float angle) {
 }
 
 
-/*
-// HANDY for tracing issues through the drawing code.
-void rect::printRect(char* label) {
-
-	Serial.print(label);
-	Serial.print(F("x:"));Serial.print(x);Serial.print(F(" "));
-	Serial.print(F("y:"));Serial.print(y);Serial.print(F(" "));
-	Serial.print(F("w:"));Serial.print(width);Serial.print(F(" "));
-	Serial.print(F("h:"));Serial.println(height);
-}
-*/
-
-
 rect::rect(void) {
    
    setLocation(DEF_LOC_X,DEF_LOC_Y);
@@ -249,8 +236,61 @@ bool rect::isSubRectOf(rect* checkRect) {
 }
 
 
+// Lets say you have a set of points and want a rectangle that spans them all. Here's the
+// way to do just that. Create your rect, call startBoundsRec() then pass in all the
+// points. using addBoundsPt() Either points or x,y values. When done, you will have a
+// rect that spans all these points.
+
+// Clear a rect to start the recording process.
+void rect::startBoundsRec(void) {
+
+	x			= x;
+	y			= y;
+	width		= 0;
+	height	= 0;
+}
 
 
+// Add in data as a point.
+void rect::addBoundsPt(point* inPt)  {   addBoundsPt(inPt->x,inPt->y); }
+ 
+ 
+// Add in data as x,y values.      	
+void rect::addBoundsPt(int x,int y) {
 
+	int	dif;
+	
+	if (!inRect(x,y)) {
+		if (x>maxX()) {
+			dif = x - maxX();
+			width = width + dif;
+		} else if (x<minX()) {
+			dif = minX() - x;
+			width = width + dif;
+			x = x;
+		}
+		if (y>maxY()) {
+			dif = y - maxY();
+			height = height + dif;
+		} else if (y<minY()) {
+			dif = minY() - y;
+			height = height + dif;
+			y = y;
+		}
+	}
+}
+
+
+/*
+// HANDY for tracing issues through the drawing code.
+void rect::printRect(char* label) {
+
+	Serial.print(label);
+	Serial.print(F("x:"));Serial.print(x);Serial.print(F(" "));
+	Serial.print(F("y:"));Serial.print(y);Serial.print(F(" "));
+	Serial.print(F("w:"));Serial.print(width);Serial.print(F(" "));
+	Serial.print(F("h:"));Serial.println(height);
+}
+*/
 
 
