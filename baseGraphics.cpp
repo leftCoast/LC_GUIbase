@@ -281,7 +281,7 @@ void rect::addBoundsPt(int x,int y) {
 }
 
 
-/*
+
 // HANDY for tracing issues through the drawing code.
 void rect::printRect(char* label) {
 
@@ -291,6 +291,6 @@ void rect::printRect(char* label) {
 	Serial.print(F("w:"));Serial.print(width);Serial.print(F(" "));
 	Serial.print(F("h:"));Serial.println(height);
 }
-*/
+
 
 

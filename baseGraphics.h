@@ -58,7 +58,7 @@ class rect {
 				void	startBoundsRec(void);											// Clear out the rect and start recording points to it.
 				void	addBoundsPt(point* inPt);										// Add in data as a point.
 				void	addBoundsPt(int x,int y);										// Add in data as x,y values.    
-				//void	printRect(char* = "Rect : ");
+				void	printRect(char* = "Rect : ");
 					
 				int	x;
 				int	y;
